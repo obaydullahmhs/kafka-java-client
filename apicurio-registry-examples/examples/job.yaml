@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kafka-registry-examples
+  namespace: demo
+spec:
+  template:
+    spec:
+      containers:
+      - image: obaydullahmhs/apicurio-registry-examples
+        imagePullPolicy: IfNotPresent
+        name: registry-examples
+        env:
+        - name: KAFKA_REGISTRY_URL
+          value: http://schemaregistry.demo.svc:8080/apis/registry/v2
+        - name: KAFKA_BROKERS
+          value: kafka-prod-pods.demo.svc.cluster.local:9092
+        - name: KAFKA_TOPIC
+          value: test-topic
+        - name: NUMBER_OF_MESSAGES
+          value: "100"
+        - name: KAFKA_USERNAME
+          value: admin
+        - name: KAFKA_PASSWORD
+          value: Ui4kmg7~Z;mIRvcZ
+        - name: KAFKA_SECURITY_PROTOCOL
+          value: SASL_PLAINTEXT
+        - name: KAFKA_SASL_MECHANISM
+          value: PLAIN
+      restartPolicy: Never
+  backoffLimit: 4
